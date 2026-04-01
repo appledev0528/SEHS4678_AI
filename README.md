@@ -4,8 +4,6 @@
 
 ![overall workflow](./overall_workflow.png)
 
-**GitHub:** [https://github.com/appledev0528/SEHS4678_AI](https://github.com/appledev0528/SEHS4678_AI)
-
 ---
 
 ## Knowledge Base
