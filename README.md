@@ -9,9 +9,9 @@
 ## Knowledge Base
 
 - Source: w3schools.com (Python pages)
+- ![Base Knowledge](./BaseKnowledge.png)
 - Connected to the Autonomous Node for "Chat with Me" and all Quiz topic nodes
-![Base Knowledge](./BaseKnowledge.png)
-![Base Knowledge use on nodes](./BaseKnowledge2.png)
+- ![Base Knowledge use on nodes](./BaseKnowledge2.png)
 ---
 
 ## Login Flow
