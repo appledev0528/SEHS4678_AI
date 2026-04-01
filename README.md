@@ -2,6 +2,8 @@
 
 **Overall Flow:** [Live Demo](https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/28/13/20260328131013-PU7I9QAI.json)
 
+(https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/28/13/20260328131013-PU7I9QAI.json)
+
 ![overall workflow](./overall_workflow.png)
 
 ---
@@ -183,6 +185,9 @@ user.loginCount = logs.length
 | uid    | String |
 | *(createdAt — auto)* | Timestamp |
 
+#### LoginLogTable Diagram
+![Login Log Table](./logTbl.png)
+
 ### UserTable
 
 | Column | Type |
@@ -190,6 +195,9 @@ user.loginCount = logs.length
 | user   | String |
 | pwd    | String |
 | *(id — auto UUID)* | String |
+
+#### UserTable Diagram
+![User Table](./userTbl.png)
 
 ### ScoreTable
 
@@ -199,3 +207,6 @@ user.loginCount = logs.length
 | score     | Number |
 | quizType  | String |
 | *(createdAt — auto)* | Timestamp |
+
+#### ScoreTable Diagram
+![Score Table](./scoreTbl.png)
