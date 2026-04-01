@@ -124,7 +124,7 @@ workflow.quizType = '';
 
 ## Encourage Me Flow
 
-![Encourage Flow](./encourageflow.png)
+![Encourage Flow](./encourgeflow.png)
 
 ### Encourage_me Node — Execute Code
 
@@ -161,7 +161,7 @@ const logs = await loginLogTable.findRecords({
 user.loginCount = logs.length
 ```
 ### Encourage Me Example
-![Encourage Example](./encourageChat.png)
+![Encourage Example](./encourgeChat.png)
 
 ---
 
