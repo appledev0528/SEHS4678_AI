@@ -2,6 +2,8 @@
 
 **Overall Flow:** [Live Demo](https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/28/13/20260328131013-PU7I9QAI.json)
 
+![overall workflow](./overall_workflow.png)
+
 **GitHub:** [https://github.com/appledev0528/SEHS4678_AI](https://github.com/appledev0528/SEHS4678_AI)
 
 ---
