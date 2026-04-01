@@ -4,6 +4,8 @@
 
 (https://cdn.botpress.cloud/webchat/v3.6/shareable.html?configUrl=https://files.bpcontent.cloud/2026/03/28/13/20260328131013-PU7I9QAI.json)
 
+**Github:** https://appledev0528.github.io/SEHS4678_AI/
+
 ![overall workflow](./overall_workflow.png)
 
 ---
