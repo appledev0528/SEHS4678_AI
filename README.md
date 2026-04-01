@@ -18,6 +18,8 @@
 
 **Logic:** Preset `loginOK = false` when entering the login node. Whenever the user enters a username and password, it enters `login_validation` to execute code that finds records from `UserTable`. If username and password do not match, it goes back to login. If they match, set `loginOK = true` and go to `Main_menu` node.
 
+![Login Flow](./loginFlow.png)
+
 ### Login Node — Execute Code
 
 ```typescript
@@ -67,8 +69,9 @@ if (results?.length !== 0) {
 ```
 
 - **Login Failed** → loops back to Login node
+  ![Login Failed](./loginFailed.png)
 - **Login Success** → proceeds to Main Menu node
-
+  ![Login Success](./loginSuccess.png)
 ---
 
 ## Main Flow
@@ -79,6 +82,11 @@ if (results?.length !== 0) {
 - **Chat** → Chat with Me Flow
 - **Logout** → back to Login node
 - **Exit** → ends the bot
+  ![Main Flow](./Main.png)
+
+### Main Flow - Example
+
+![Main Flow Example](./MainChat.png)
 
 ---
 
@@ -89,6 +97,8 @@ if (results?.length !== 0) {
 There are 3 topic Autonomous nodes (sharing the same knowledge base as "Chat with Me"). Each node provides 4 questions. After completing 4 questions, the marks and quiz topic are recorded to `workflow.score` and `workflow.quizType` respectively. The default value of `workflow.quizType` is `null`.
 
 After `workflow.quizType` is recorded, the flow goes to `save_results` to save `workflow.score`, `workflow.quizType`, and `workflow.rlt_user.uid` to `scoreTable`. After that, if the user chooses **"Try again"**, it goes to `Quiz_router` to check the quiz type and route back to the previous quiz.
+
+![Quiz Flow](./quizFlow.png)
 
 ### Save_results Node — Execute Code
 
@@ -103,9 +113,14 @@ workflow.quizTypeTmp = workflow.quizType
 workflow.quizType = '';
 ```
 
+### Quiz Example
+![Quiz 1](./quiz1.png)
+![Quiz 2](./quiz2.png)
 ---
 
 ## Encourage Me Flow
+
+![Encourage Flow](./encourageflow.png)
 
 ### Encourage_me Node — Execute Code
 
@@ -141,6 +156,8 @@ const logs = await loginLogTable.findRecords({
 })
 user.loginCount = logs.length
 ```
+### Encourage Me Example
+![Encourage Example](./encourageChat.png)
 
 ---
 
@@ -151,6 +168,10 @@ user.loginCount = logs.length
 - Scoped to Python and programming-related topics only
 - Includes a transition back to Main Menu when user says "menu" or "go back"
 
+![Chat With Me Flow](./chatWithMeFlow.png)
+
+### Chat With Me Example
+![Encourage Chat](./chatWithMeChat.png)
 ---
 
 ## Tables
