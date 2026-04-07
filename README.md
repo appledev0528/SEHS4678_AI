@@ -6,23 +6,23 @@
 
 **Github:** https://appledev0528.github.io/SEHS4678_AI/
 
-![overall workflow](./overall_workflow.png)
+![overall workflow](./no_code/overall_workflow.png)
 
 ---
 
 ## Knowledge Base
 
 - Source: w3schools.com (Python pages)
-- ![Base Knowledge](./BaseKnowledge.png)
+- ![Base Knowledge](./no_code/BaseKnowledge.png)
 - Connected to the Autonomous Node for "Chat with Me" and all Quiz topic nodes
-- ![Base Knowledge use on nodes](./BaseKnowledge2.png)
+- ![Base Knowledge use on nodes](./no_code/BaseKnowledge2.png)
 ---
 
 ## Login Flow
 
 **Logic:** Preset `loginOK = false` when entering the login node. Whenever the user enters a username and password, it enters `login_validation` to execute code that finds records from `UserTable`. If username and password do not match, it goes back to login. If they match, set `loginOK = true` and go to `Main_menu` node.
 
-![Login Flow](./loginFlow.png)
+![Login Flow](./no_code/loginFlow.png)
 
 ### Login Node — Execute Code
 
@@ -73,9 +73,9 @@ if (results?.length !== 0) {
 ```
 
 - **Login Failed** → loops back to Login node
-  ![Login Failed](./loginFailed.png)
+  ![Login Failed](./no_code/loginFailed.png)
 - **Login Success** → proceeds to Main Menu node
-  ![Login Success](./loginSuccess.png)
+  ![Login Success](./no_code/loginSuccess.png)
 ---
 
 ## Main Flow
@@ -86,11 +86,11 @@ if (results?.length !== 0) {
 - **Chat** → Chat with Me Flow
 - **Logout** → back to Login node
 - **Exit** → ends the bot
-  ![Main Flow](./Main.png)
+  ![Main Flow](./no_code/Main.png)
 
 ### Main Flow - Example
 
-![Main Flow Example](./MainChat.png)
+![Main Flow Example](./no_code/MainChat.png)
 
 ---
 
@@ -102,7 +102,7 @@ There are 3 topic Autonomous nodes (sharing the same knowledge base as "Chat wit
 
 After `workflow.quizType` is recorded, the flow goes to `save_results` to save `workflow.score`, `workflow.quizType`, and `workflow.rlt_user.uid` to `scoreTable`. After that, if the user chooses **"Try again"**, it goes to `Quiz_router` to check the quiz type and route back to the previous quiz.
 
-![Quiz Flow](./quizFlow.png)
+![Quiz Flow](./no_code/quizFlow.png)
 
 ### Save_results Node — Execute Code
 
@@ -118,13 +118,13 @@ workflow.quizType = '';
 ```
 
 ### Quiz Example
-![Quiz 1](./quiz1.png)
-![Quiz 2](./quiz2.png)
+![Quiz 1](./no_code/quiz1.png)
+![Quiz 2](./no_code/quiz2.png)
 ---
 
 ## Encourage Me Flow
 
-![Encourage Flow](./encourgeflow.png)
+![Encourage Flow](./no_code/encourgeflow.png)
 
 ### Encourage_me Node — Execute Code
 
@@ -161,7 +161,7 @@ const logs = await loginLogTable.findRecords({
 user.loginCount = logs.length
 ```
 ### Encourage Me Example
-![Encourage Example](./encourgeChat.png)
+![Encourage Example](./no_code/encourgeChat.png)
 
 ---
 
@@ -172,10 +172,10 @@ user.loginCount = logs.length
 - Scoped to Python and programming-related topics only
 - Includes a transition back to Main Menu when user says "menu" or "go back"
 
-![Chat With Me Flow](./chatWithMeFlow.png)
+![Chat With Me Flow](./no_code/chatWithMeFlow.png)
 
 ### Chat With Me Example
-![Encourage Chat](./chatWithMeChat.png)
+![Encourage Chat](./no_code/chatWithMeChat.png)
 ---
 
 ## Tables
@@ -188,7 +188,7 @@ user.loginCount = logs.length
 | *(createdAt — auto)* | Timestamp |
 
 #### LoginLogTable Diagram
-![Login Log Table](./logTbl.png)
+![Login Log Table](./no_code/logTbl.png)
 
 ### UserTable
 
@@ -199,7 +199,7 @@ user.loginCount = logs.length
 | *(id — auto UUID)* | String |
 
 #### UserTable Diagram
-![User Table](./userTbl.png)
+![User Table](./no_code/userTbl.png)
 
 ### ScoreTable
 
@@ -211,4 +211,4 @@ user.loginCount = logs.length
 | *(createdAt — auto)* | Timestamp |
 
 #### ScoreTable Diagram
-![Score Table](./scoreTbl.png)
+![Score Table](./no_code/scoreTbl.png)
