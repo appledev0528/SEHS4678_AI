@@ -1,19 +1,35 @@
 import json
 import os
+import random
 from datetime import datetime
+
+import nltk
+import numpy as np
+from nltk.stem.lancaster import LancasterStemmer
+from tensorflow.keras import layers, models
+
+stemmer = LancasterStemmer()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 USERS_FILE = os.path.join(BASE_DIR, 'users.json')
 QUESTIONS_FILE = os.path.join(BASE_DIR, 'questions.json')
 ENCOURAGEMENT_FILE = os.path.join(BASE_DIR, 'encouragement.json')
 KB_FILE = os.path.join(BASE_DIR, 'chat_kb.json')
+INTENTS_FILE = os.path.join(BASE_DIR, 'intents.json')
 
 BANNER = """
 ============================================================
-PolyU SPEED SEHS4678 (Chuk Hiu Yin)
+PolyU SPEED SEHS4678 (23048495S)
 Python Learner Support Chatbot
 ============================================================
 """
+
+labels = []
+words = []
+docs_x = []
+docs_y = []
+data = {}
+model = None
 
 
 def load_json(path):
@@ -21,9 +37,9 @@ def load_json(path):
         return json.load(f)
 
 
-def save_json(path, data):
+def save_json(path, data_obj):
     with open(path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
+        json.dump(data_obj, f, indent=2, ensure_ascii=False)
 
 
 def pause():
@@ -34,14 +50,17 @@ def normalize(text):
     return text.strip().lower()
 
 
+# ------------------------------
+# Tutorial 09 required functions
+# ------------------------------
 def login(users):
     print(BANNER)
     print("Login required")
     print("Examples: Emp001 / Emp001, SpvrB01 / SpvrB01\n")
 
     for _ in range(3):
-        username = input("Username: ").strip()
-        password = input("Password: ").strip()
+        username = input("Enter your username: ").strip()
+        password = input("Enter your password: ").strip()
 
         user = users.get(username)
         if not user:
@@ -55,7 +74,9 @@ def login(users):
         user['login_count'] = user.get('login_count', 0) + 1
         last_login = user.get('last_login')
         user['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        print(f"\nWelcome, {user['display_name']}!")
+
+        print(f"Welcome, {username}!")
+        print(f"Display name: {user.get('display_name', username)}")
         if user['login_count'] > 1:
             print(f"Welcome back. This is your login number {user['login_count']}.")
         else:
@@ -67,88 +88,222 @@ def login(users):
     return None, None
 
 
-def choose_topic(questions):
-    topics = list(questions.keys())
-    print("\nQuiz topics")
-    for i, topic in enumerate(topics, start=1):
-        print(f"{i}. {topic}")
-    print(f"{len(topics)+1}. All topics")
+def quiz(user=None, questions=None):
+    print("\nQuiz me")
 
-    choice = input("Choose a topic: ").strip()
-    if choice.isdigit():
-        choice = int(choice)
-        if 1 <= choice <= len(topics):
-            return [topics[choice - 1]]
-        if choice == len(topics) + 1:
-            return topics
-    print("Invalid choice. Defaulting to all topics.")
-    return topics
+    if questions:
+        topics = list(questions.keys())
+        print("Quiz topics")
+        for i, topic in enumerate(topics, start=1):
+            print(f"{i}. {topic}")
+        print(f"{len(topics) + 1}. All topics")
+
+        choice = input("Choose a topic: ").strip()
+        if choice.isdigit():
+            choice = int(choice)
+            if 1 <= choice <= len(topics):
+                selected_topics = [topics[choice - 1]]
+            elif choice == len(topics) + 1:
+                selected_topics = topics
+            else:
+                print("Invalid choice. Defaulting to all topics.")
+                selected_topics = topics
+        else:
+            print("Invalid choice. Defaulting to all topics.")
+            selected_topics = topics
+
+        total = 0
+        correct = 0
+        topic_scores = {}
+
+        for topic in selected_topics:
+            print(f"\n--- Topic: {topic} ---")
+            topic_correct = 0
+            topic_total = len(questions[topic])
+            for q in questions[topic]:
+                print(f"\n{q['question']}")
+                for i, option in enumerate(q['options'], start=1):
+                    print(f"{i}. {option}")
+
+                while True:
+                    ans = input("Your answer (1-4): ").strip()
+                    if ans in {'1', '2', '3', '4'}:
+                        ans = int(ans) - 1
+                        break
+                    print("Please enter 1, 2, 3, or 4.")
+
+                total += 1
+                if ans == q['answer_index']:
+                    print("Correct!")
+                    correct += 1
+                    topic_correct += 1
+                else:
+                    correct_option = q['options'][q['answer_index']]
+                    print(f"Not correct. Answer: {correct_option}")
+                    print(f"Explanation: {q['explanation']}")
+
+            topic_scores[topic] = {'correct': topic_correct, 'total': topic_total}
+
+        print("\nQuiz finished.")
+        print(f"Score: {correct}/{total}")
+        for topic, result in topic_scores.items():
+            print(f"- {topic}: {result['correct']}/{result['total']}")
+
+        if correct == total:
+            print("Excellent. You answered all questions correctly.")
+        elif total > 0 and correct / total >= 0.7:
+            print("Good job. You understand most of the ideas.")
+        else:
+            print("Keep going. Review the explanations and try again.")
+
+        if user is not None:
+            user['quiz_attempts'] = user.get('quiz_attempts', 0) + 1
+            user['last_score'] = correct
+            user['last_total'] = total
+            user['topic_scores'] = topic_scores
+    else:
+        print("Question: Which Python data structure stores key-value pairs?")
+        answer = input("Your answer: ").strip().lower()
+        if 'dictionary' in answer or answer == 'dict':
+            print("Correct! A dictionary stores key-value pairs.")
+        else:
+            print("Suggested answer: dictionary")
 
 
-def ask_mcq(question):
-    print(f"\n{question['question']}")
-    for i, option in enumerate(question['options'], start=1):
-        print(f"{i}. {option}")
+# ---------------------------------
+# Tutorial 09 NLP chatbot functions
+# ---------------------------------
+def read_intent():
+    global labels, words, docs_x, docs_y, data
+
+    with open(INTENTS_FILE, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+
+    words = []
+    labels = []
+    docs_x = []
+    docs_y = []
+
+    for intent in data['intents']:
+        for pattern in intent['patterns']:
+            wrds = nltk.word_tokenize(pattern)
+            words.extend(wrds)
+            docs_x.append(wrds)
+            docs_y.append(intent['tag'])
+
+        if intent['tag'] not in labels:
+            labels.append(intent['tag'])
+
+    words = [stemmer.stem(w.lower()) for w in words if w != '?']
+    words = sorted(list(set(words)))
+    labels = sorted(labels)
+    return labels, words, docs_x, docs_y, data
+
+
+def make_BOW(labels, words, docs_x, docs_y):
+    training = []
+    output = []
+    out_empty = [0 for _ in range(len(labels))]
+
+    for x, doc in enumerate(docs_x):
+        bag = []
+        wrds = [stemmer.stem(w.lower()) for w in doc]
+
+        for w in words:
+            if w in wrds:
+                bag.append(1)
+            else:
+                bag.append(0)
+
+        output_row = out_empty[:]
+        output_row[labels.index(docs_y[x])] = 1
+        training.append(bag)
+        output.append(output_row)
+
+    return np.array(training), np.array(output)
+
+
+def bag_of_words(s, words):
+    bag = [0 for _ in range(len(words))]
+    s_words = nltk.word_tokenize(s)
+    s_words = [stemmer.stem(word.lower()) for word in s_words]
+
+    for se in s_words:
+        for i, w in enumerate(words):
+            if w == se:
+                bag[i] = 1
+
+    return np.array(bag)
+
+
+def build_and_train_model():
+    global model, labels, words, docs_x, docs_y, data
+
+    nltk.download('punkt', quiet=True)
+    try:
+        nltk.download('punkt_tab', quiet=True)
+    except Exception:
+        pass
+
+    labels, words, docs_x, docs_y, data = read_intent()
+    training, output = make_BOW(labels, words, docs_x, docs_y)
+
+    model = models.Sequential()
+    model.add(layers.Input(shape=(len(training[0]),)))
+    model.add(layers.Dense(8, activation='relu'))
+    model.add(layers.Dense(8, activation='relu'))
+    model.add(layers.Dense(len(output[0]), activation='softmax'))
+
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    model.summary()
+
+    # Tutorial 09 required modification: epochs changed from 10 to 500
+    model.fit(training, output, epochs=500, batch_size=8, verbose=1)
+
+
+def get_response_tag(inp):
+    ip = bag_of_words(inp, words)
+    ip = np.array(ip).reshape(1, -1)
+    results = model.predict(ip, verbose=0)
+    results_index = np.argmax(results)
+    tag = labels[results_index]
+    return tag
+
+
+def get_response_from_tag(tag):
+    for tg in data['intents']:
+        if tg['tag'] == tag:
+            return random.choice(tg['responses'])
+    return 'I am not sure how to answer that.'
+
+
+def chat():
+    print("\nStart talking with the bot!")
+    print("Try these inputs for testing: hi, name, hours, goodbye")
 
     while True:
-        ans = input("Your answer (1-4): ").strip()
-        if ans in {'1', '2', '3', '4'}:
-            return int(ans) - 1
-        print("Please enter 1, 2, 3, or 4.")
+        inp = input("You: ").strip()
+        tag = get_response_tag(inp)
+        response = get_response_from_tag(tag)
+        print("Bot:", response)
+
+        # Tutorial 09 required modification:
+        # stop when the detected intent tag is goodbye
+        if tag == 'goodbye':
+            print('Chatbot stopped because goodbye intent was detected.')
+            break
 
 
-def run_quiz(user, questions):
-    topics = choose_topic(questions)
-    total = 0
-    correct = 0
-    topic_scores = {}
-
-    print("\nStarting quiz...")
-    for topic in topics:
-        print(f"\n--- Topic: {topic} ---")
-        topic_correct = 0
-        topic_total = len(questions[topic])
-        for q in questions[topic]:
-            total += 1
-            selected = ask_mcq(q)
-            if selected == q['answer_index']:
-                print("Correct!")
-                correct += 1
-                topic_correct += 1
-            else:
-                correct_option = q['options'][q['answer_index']]
-                print(f"Not correct. Answer: {correct_option}")
-                print(f"Explanation: {q['explanation']}")
-        topic_scores[topic] = {'correct': topic_correct, 'total': topic_total}
-
-    user['quiz_attempts'] = user.get('quiz_attempts', 0) + 1
-    user['last_score'] = correct
-    user['last_total'] = total
-    user['topic_scores'] = topic_scores
-
-    print("\nQuiz finished.")
-    print(f"Score: {correct}/{total}")
-    for topic, result in topic_scores.items():
-        print(f"- {topic}: {result['correct']}/{result['total']}")
-
-    if correct == total:
-        print("Excellent. You answered all questions correctly.")
-    elif correct / total >= 0.7:
-        print("Good job. You understand most of the ideas.")
-    else:
-        print("Keep going. Review the explanations and try again.")
-
-
+# -------------------
+# Project extra parts
+# -------------------
 def encouragement_message(user, messages):
     login_count = user.get('login_count', 0)
     last_score = user.get('last_score', 0)
     last_total = user.get('last_total', 0)
     mood = user.get('last_mood', 'neutral')
 
-    if last_total > 0:
-        ratio = last_score / last_total
-    else:
-        ratio = None
+    ratio = (last_score / last_total) if last_total > 0 else None
 
     if mood == 'stressed':
         return messages['mood_support']['stressed']
@@ -188,8 +343,8 @@ def find_kb_answer(question, kb):
     return None
 
 
-def chat_with_user(user, kb):
-    print("\nChat with me")
+def chat_with_learning_support(user, kb):
+    print("\nPython learning support chat")
     print("Ask about Python topics only. Type 'exit' to return.")
     while True:
         q = input("You: ").strip()
@@ -219,14 +374,15 @@ def main_menu(username, user, users, questions, messages, kb):
         print("\nMain menu")
         print("1. Quiz me")
         print("2. Encourage me")
-        print("3. Chat with me")
-        print("4. View progress")
-        print("5. Change password")
-        print("6. Logout")
-        choice = input("Choose 1-6: ").strip()
+        print("3. NLP Chatbot")
+        print("4. Python learning support chat")
+        print("5. View progress")
+        print("6. Change password")
+        print("7. Logout")
+        choice = input("Choose 1-7: ").strip()
 
         if choice == '1':
-            run_quiz(user, questions)
+            quiz(user, questions)
             save_json(USERS_FILE, users)
             pause()
         elif choice == '2':
@@ -234,12 +390,17 @@ def main_menu(username, user, users, questions, messages, kb):
             save_json(USERS_FILE, users)
             pause()
         elif choice == '3':
-            chat_with_user(user, kb)
+            chat()
             save_json(USERS_FILE, users)
+            pause()
         elif choice == '4':
-            show_progress(user)
+            chat_with_learning_support(user, kb)
+            save_json(USERS_FILE, users)
             pause()
         elif choice == '5':
+            show_progress(user)
+            pause()
+        elif choice == '6':
             new_pw = input('Enter new password: ').strip()
             if new_pw:
                 user['password'] = new_pw
@@ -248,7 +409,7 @@ def main_menu(username, user, users, questions, messages, kb):
             else:
                 print('Password not changed.')
             pause()
-        elif choice == '6':
+        elif choice == '7':
             save_json(USERS_FILE, users)
             print('Logged out. Goodbye.')
             break
@@ -262,6 +423,8 @@ def main():
     messages = load_json(ENCOURAGEMENT_FILE)
     kb = load_json(KB_FILE)
 
+    build_and_train_model()
+
     username, user = login(users)
     if not user:
         print('Too many failed attempts. Program ends.')
@@ -269,6 +432,12 @@ def main():
         return
 
     save_json(USERS_FILE, users)
+
+    # Tutorial 09 requires login and quiz before chatbot starts.
+    # This keeps that requirement visible while preserving the project menu.
+    quiz(user, questions)
+    save_json(USERS_FILE, users)
+
     main_menu(username, user, users, questions, messages, kb)
 
 

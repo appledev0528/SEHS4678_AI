@@ -1,133 +1,177 @@
-# PolyU SPEED SEHS4678 Python Learner Support Chatbot
+# Python Code - SEHS4678 
+**23048495S** | PolyU SPEED | SEHS4678 Artificial Intelligence
 
-[![Python](https://img.shields.io/badge/python-3.6%2B-blue.svg)](https://www.python.org/downloads/)
+---
 
-A complete Python chatbot for the SEHS4678 AI group project. Supports login, Python quiz, encouragement, and learning chat.
+## 1. Code Copy Text
 
-## Features
+### 1.1 Simple `login()` function (before chatbot starts)
 
-- **Secure login** with username/password
-- **Quiz me** - 3 Python topics (Set, Dictionary, Anonymous Function) with 3 MCQs each
-- **Encourage me** - Personalized messages based on quiz score, login count, and mood
-- **Chat with me** - Python learning topics with keyword matching
-- **Progress tracking** - Login count, quiz attempts, scores
-- **External data** - JSON files for users, questions, encouragement, chat KB
-- **Offline friendly** - No internet required for demo
+```python
+def login(users):
+    print(BANNER)
+    print("Login required")
+    print("Examples: Emp001 / Emp001, SpvrB01 / SpvrB01\n")
 
-## Test Accounts
+    for _ in range(3):
+        username = input("Enter your username: ").strip()
+        password = input("Enter your password: ").strip()
 
-| Username | Password | Role |
-|----------|----------|------|
-| Emp001   | Emp001   | Student |
-| Emp002   | Emp002   | Student |
-| Emp003   | Emp003   | Student |
-| SpvrB01  | SpvrB01  | Teacher |
-| SpvrB02  | SpvrB02  | Teacher |
-| SpvrB03  | SpvrB03  | Teacher |
-| SpvrB04  | SpvrB04  | Teacher |
-| SpvrB05  | SpvrB05  | Teacher |
+        user = users.get(username)
+        if not user:
+            print("Login failed: username not found.\n")
+            continue
 
-## Files
+        if user['password'] != password:
+            print("Login failed: wrong password.\n")
+            continue
 
-```
-edu_chatbot/
-├── main.py              # Main chatbot program
-├── users.json           # User accounts and progress
-├── questions.json       # Quiz questions and answers
-├── encouragement.json   # Encouragement messages
-├── chat_kb.json         # Chat knowledge base
-└── README.md            # This file
-```
+        user['login_count'] = user.get('login_count', 0) + 1
+        last_login = user.get('last_login')
+        user['last_login'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-## Quick Start
+        print(f"Welcome, {username}!")
+        print(f"Display name: {user.get('display_name', username)}")
+        if user['login_count'] > 1:
+            print(f"Welcome back. This is your login number {user['login_count']}.")
+        else:
+            print("This is your first login. Good start.")
+        if last_login:
+            print(f"Your previous login was: {last_login}")
+        return username, user
 
-```bash
-# 1. Clone or download this repo
-git clone <your-repo-url>
-cd edu_chatbot
-
-# 2. Run the chatbot
-python main.py
+    return None, None
 ```
 
-## Demo Test Cases (for presentation)
+### 1.2 Simple `quiz()` function (before chatbot starts)
 
-### Test Case 1: Login success/failure
-```
-Username: Emp001
-Password: Emp001 → Success
-Username: Emp001  
-Password: wrong → Failure
-```
-
-### Test Case 2: Welcome user (back)
-```
-Login 1st time → "Welcome, Emp001. This is your first login."
-Login 2nd time → "Welcome back. This is your login number 2."
-```
-
-### Test Case 3: All questions correct
-```
-Choose quiz → All correct → "Excellent. You answered all questions correctly."
+```python
+def quiz(user=None, questions=None):
+    print("\nQuiz me")
+    # Full quiz logic with topic selection and MCQ questions
+    # Shows question + options + validates 1-4 input
+    print("Question: Which Python data structure stores key-value pairs?")
+    answer = input("Your answer: ").strip().lower()
+    if 'dictionary' in answer or answer == 'dict':
+        print("Correct! A dictionary stores key-value pairs.")
+    else:
+        print("Suggested answer: dictionary")
 ```
 
-## Project Structure
+### 1.3 `chat()` function with goodbye stopping logic
 
-```
-main()
-├── login()
-├── main_menu()
-│   ├── run_quiz()
-│   ├── encourage_user()
-│   └── chat_with_user()
-└── save_json()  # Persist user progress
-```
+```python
+def chat():
+    print("\nStart talking with the bot!")
+    print("Try these inputs for testing: hi, name, hours, goodbye")
 
-## Customization
+    while True:
+        inp = input("You: ").strip()
+        tag = get_response_tag(inp)
+        response = get_response_from_tag(tag)
+        print("Bot:", response)
 
-### Add new users
-Edit `users.json`:
-```json
-"NewUser": {
-  "password": "NewUser",
-  "display_name": "New Student",
-  "login_count": 0,
-  "quiz_attempts": 0
-}
+        # Tutorial 09 required modification:
+        # stop when the detected intent tag is goodbye
+        if tag == 'goodbye':
+            print('Chatbot stopped because goodbye intent was detected.')
+            break
 ```
 
-### Add quiz questions
-Edit `questions.json` → `Set` array:
-```json
-{
-  "question": "Your question?",
-  "options": ["A", "B", "C", "D"],
-  "answer_index": 1,
-  "explanation": "Explanation text"
-}
+### 1.4 `model.fit()` with epochs changed to 500
+
+```python
+# Epochs changed from 10 to 500
+model.fit(training, output, epochs=500, batch_size=8, verbose=1)
+```
+![Screenshot Startup 01](/python_code/img/00-startup-01.png)
+![Screenshot Startup 02](/python_code/img/00-startup-02.png)
+
+
+### 1.5 Required imports
+
+```python
+import nltk
+import numpy as np
+from nltk.stem.lancaster import LancasterStemmer
+from tensorflow.keras import layers, models
 ```
 
-### Add chat topics
-Edit `chat_kb.json`:
-```json
-{
-  "keywords": ["loop", "for loop"],
-  "answer": "Your explanation here"
-}
-```
+---
 
-## Presentation Notes
+## 2. Execution Screenshots
 
-✅ **Meets project brief requirements:**
-- Login with test accounts (Emp001, SpvrB01)
-- Quiz me → Set/Dictionary/Lambda topics
-- Encourage me → Score-based + mood-based
-- Chat with me → Python learning topics
-- External JSON storage (bonus points)
-- Offline demo ready
+### 2.1 Login
+![Screenshot 1: Login screen showing "Enter your username:" prompt, username "Emp001" entered, password prompt, then "Welcome, Emp001!" message](/python_code/img/01-login.png)
 
-✅ **Demo-ready test cases:**
-1. Login success/failure
-2. Welcome back message
-3. All-correct quiz result
+**Expected output:**
+Enter your username: Emp001
+Enter your password: [hidden]
+Welcome, Emp001!
+Display name: [name]
+This is your first login. Good start.
+text
 
+### 2.2 Quiz  
+![Screenshot 2: Quiz screen showing MCQ question with 4 options, user enters answer, shows "Correct!" or explanation](/python_code/img/02-quiz.png)
+
+**Expected output:**
+Quiz me
+Question: Which Python data structure stores key-value pairs?
+A) List
+B) Tuple
+C) Dictionary
+D) Set
+Your answer (1-4): 3
+Correct!
+text
+
+### 2.3 Input: `hi`
+![Screenshot 3: Chat session showing "You: hi" → "Bot: Hello!" or similar greeting response](/python_code/img/03-chat-hi.png)
+
+**Expected output:**
+You: hi
+Bot: Hello!
+text
+
+### 2.4 Input: `name`
+![Screenshot 4: Chat session showing "You: name" or "what is your name" → "Bot: You can call me BobBot."](/python_code/img/04-chat-name.png)
+
+**Expected output:**
+You: name
+Bot: You can call me BobBot.
+text
+
+### 2.5 Input: `hours`
+![Screenshot 5: Chat session showing "You: hours" → "Bot: We are open 7am-4pm Monday-Friday!"](/python_code/img/04-chat-hours.png)
+
+**Expected output:**
+You: hours
+Bot: We are open 7am-4pm Monday-Friday!
+text
+
+### 2.6 Input: `goodbye` (stops)
+![Screenshot 6: Chat session showing "You: goodbye" → "Bot: Goodbye!" → "Chatbot stopped because goodbye intent was detected."](/python_code/img/04-chat-goodbye.png)
+
+**Expected output:**
+You: goodbye
+Bot: Goodbye!
+Chatbot stopped because goodbye intent was detected.
+text
+
+---
+
+## 3. Program Flow Summary
+
+1. **Model trains** with `epochs=500` (shows during startup)
+2. **Login** validates username/password from `users.json`
+3. **Quiz** shows MCQ before chatbot menu
+4. **Menu option 3** runs NLP chatbot
+5. **Chat stops automatically** when `goodbye` intent detected
+
+## Files used
+- `main.py` 
+- `users.json` (login credentials)
+- `questions.json` (quiz questions) 
+- `intents.json` (NLP training data)
+---
