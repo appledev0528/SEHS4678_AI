@@ -1,0 +1,15 @@
+{
+  "score_based": {
+    "perfect": "Excellent work. You got a perfect score, which shows strong understanding and careful reading.",
+    "good": "Well done. Your result is good, and a quick review of weaker points can make it even better.",
+    "needs_practice": "Do not worry. Mistakes are part of learning Python, and each retry builds your confidence."
+  },
+  "login_based": {
+    "consistent": "Your regular login habit is a strength. Consistent practice usually leads to better programming skill.",
+    "new_user": "Welcome to the chatbot. Start with one topic, learn step by step, and build momentum."
+  },
+  "mood_support": {
+    "stressed": "Take a short break, breathe slowly, and return to one small question at a time. Progress in coding does not need to be rushed.",
+    "confused": "Confusion means you are meeting a new idea. Review one example carefully, then try a similar question again."
+  }
+}

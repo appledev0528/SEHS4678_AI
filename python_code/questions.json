@@ -1,0 +1,62 @@
+{
+  "Set": [
+    {
+      "question": "Which statement about a Python set is correct?",
+      "options": ["A set keeps duplicate values.", "A set stores only unique values.", "A set uses key-value pairs.", "A set must be sorted."],
+      "answer_index": 1,
+      "explanation": "A set automatically removes duplicates, so each value appears only once."
+    },
+    {
+      "question": "Which symbol pair is commonly used to create a set literal with values?",
+      "options": ["[]", "()", "{}", "< >"],
+      "answer_index": 2,
+      "explanation": "Curly braces are used for set literals such as {1, 2, 3}."
+    },
+    {
+      "question": "Which operation finds common elements between two sets?",
+      "options": ["union", "intersection", "append", "sort"],
+      "answer_index": 1,
+      "explanation": "Intersection returns the values shared by both sets."
+    }
+  ],
+  "Dictionary": [
+    {
+      "question": "What does a Python dictionary store?",
+      "options": ["Only numbers", "Characters only", "Key-value pairs", "Unique unordered values only"],
+      "answer_index": 2,
+      "explanation": "A dictionary maps keys to values, such as {'name': 'Amy'}."
+    },
+    {
+      "question": "Which expression gets the value of key 'age' from dictionary d?",
+      "options": ["d(age)", "d['age']", "d.age", "get d age"],
+      "answer_index": 1,
+      "explanation": "Square brackets with the key return the stored value."
+    },
+    {
+      "question": "Which method returns all keys in a dictionary?",
+      "options": ["keys()", "values()", "items()", "add()"],
+      "answer_index": 0,
+      "explanation": "The keys() method gives a view of all dictionary keys."
+    }
+  ],
+  "Anonymous Function": [
+    {
+      "question": "What keyword is used to create an anonymous function in Python?",
+      "options": ["func", "def", "lambda", "anonymous"],
+      "answer_index": 2,
+      "explanation": "Python uses lambda to create a small anonymous function."
+    },
+    {
+      "question": "Which lambda expression doubles x?",
+      "options": ["lambda x: x * 2", "lambda: x = 2", "def x: x * 2", "lambda x -> x * 2"],
+      "answer_index": 0,
+      "explanation": "A lambda uses the form lambda parameters: expression."
+    },
+    {
+      "question": "When is a lambda function most suitable?",
+      "options": ["For a short simple function", "For a full class definition", "For importing a library", "For file saving only"],
+      "answer_index": 0,
+      "explanation": "Lambda functions are best for short expressions used once or passed as arguments."
+    }
+  ]
+}

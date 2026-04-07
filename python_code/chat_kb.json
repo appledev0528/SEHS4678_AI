@@ -1,0 +1,30 @@
+[
+  {
+    "keywords": ["set", "python set", "unique values", "intersection"],
+    "answer": "A set is an unordered collection of unique values. It is useful when you want to remove duplicates or compare groups of items with operations such as union and intersection."
+  },
+  {
+    "keywords": ["dictionary", "dict", "key value", "keys", "values"],
+    "answer": "A dictionary stores data as key-value pairs. It is useful when you want to look up a value by a meaningful key, such as a student ID or a name."
+  },
+  {
+    "keywords": ["lambda", "anonymous function"],
+    "answer": "A lambda function is a short anonymous function written in one line. It is often used for simple operations inside map, filter, sorted, or small helper tasks."
+  },
+  {
+    "keywords": ["loop", "for loop", "while loop"],
+    "answer": "A loop repeats actions. A for loop is commonly used when you iterate through items, while a while loop continues until a condition becomes false."
+  },
+  {
+    "keywords": ["function", "def", "parameter", "argument"],
+    "answer": "A function is a reusable block of code defined with def. Parameters are the input names in the function definition, and arguments are the actual values you pass in."
+  },
+  {
+    "keywords": ["class", "oop", "object oriented", "object"],
+    "answer": "In object-oriented programming, a class is a blueprint and an object is an instance created from that class. OOP helps organize code with attributes and methods."
+  },
+  {
+    "keywords": ["list", "tuple"],
+    "answer": "A list is mutable, so you can change its content after creation. A tuple is usually immutable, so it is useful when data should stay fixed."
+  }
+]
