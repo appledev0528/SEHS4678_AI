@@ -10,7 +10,7 @@ KB_FILE = os.path.join(BASE_DIR, 'chat_kb.json')
 
 BANNER = """
 ============================================================
-PolyU SPEED SEHS4678 
+PolyU SPEED SEHS4678 (Chuk Hiu Yin)
 Python Learner Support Chatbot
 ============================================================
 """
