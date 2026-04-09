@@ -104,7 +104,7 @@ from tensorflow.keras import layers, models
 ## 2. Execution Screenshots
 
 ### 2.1 Login
-![Screenshot 1: Login screen showing "Enter your username:" prompt, username "Emp001" entered, password prompt, then "Welcome, Emp001!" message](/python_code/img/01-login.png)
+![Screenshot 1: Login screen showing "Enter your username:" prompt, username "Emp001" entered, password prompt, then "Welcome, Emp001!" message](../python_code/img/01-login.png)
 
 **Expected output:**
 Enter your username: Emp001
