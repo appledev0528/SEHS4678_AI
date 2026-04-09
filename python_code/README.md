@@ -2,7 +2,8 @@
 **23048495S** | PolyU SPEED | SEHS4678 Artificial Intelligence
 
 
-**Github:** https://appledev0528.github.io/SEHS4678_AI/python_code/
+**Github:** 
+https://appledev0528.github.io/SEHS4678_AI/python_code/
 ---
 
 ## 1. Code Copy Text
@@ -86,8 +87,8 @@ def chat():
 # Epochs changed from 10 to 500
 model.fit(training, output, epochs=500, batch_size=8, verbose=1)
 ```
-![Screenshot Startup 01](/python_code/img/00-startup-01.png)
-![Screenshot Startup 02](/python_code/img/00-startup-02.png)
+![Screenshot Startup 01](../python_code/img/00-startup-01.png)
+![Screenshot Startup 02](../python_code/img/00-startup-02.png)
 
 
 ### 1.5 Required imports
