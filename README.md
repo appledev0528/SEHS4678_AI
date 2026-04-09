@@ -102,7 +102,7 @@ There are 3 topic Autonomous nodes (sharing the same knowledge base as "Chat wit
 
 After `workflow.quizType` is recorded, the flow goes to `save_results` to save `workflow.score`, `workflow.quizType`, and `workflow.rlt_user.uid` to `scoreTable`. After that, if the user chooses **"Try again"**, it goes to `Quiz_router` to check the quiz type and route back to the previous quiz.
 
-![Quiz Flow](./no_code/quizFlow.png)
+![Quiz Flow](./no_code/quizeFlow.png)
 
 ### Save_results Node — Execute Code
 
