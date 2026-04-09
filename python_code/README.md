@@ -4,6 +4,7 @@
 
 **Github:** 
 https://appledev0528.github.io/SEHS4678_AI/python_code/
+
 ---
 
 ## 1. Code Copy Text
@@ -177,4 +178,5 @@ text
 - `users.json` (login credentials)
 - `questions.json` (quiz questions) 
 - `intents.json` (NLP training data)
+
 ---
