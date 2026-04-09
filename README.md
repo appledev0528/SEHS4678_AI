@@ -107,7 +107,18 @@ After `workflow.quizType` is recorded, the flow goes to `save_results` to save `
 ### Save_results Node — Execute Code
 
 ```typescript
+// reset routing flag
 workflow.quizTypeTmp = ''
+// Save results
+try {
+  await scoreTable.createRecord({
+    uid: workflow.rlt_user.uid,
+    score: workflow.score,
+    quizType: workflow.quizType
+  })
+} catch (error) {
+  console.error('Failed to insert score:', error)
+}
 ```
 
 ### Quiz_router Node — Execute Code
