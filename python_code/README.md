@@ -115,7 +115,7 @@ This is your first login. Good start.
 text
 
 ### 2.2 Quiz  
-![Screenshot 2: Quiz screen showing MCQ question with 4 options, user enters answer, shows "Correct!" or explanation](/python_code/img/02-quiz.png)
+![Screenshot 2: Quiz screen showing MCQ question with 4 options, user enters answer, shows "Correct!" or explanation](../python_code/img/02-quiz.png)
 
 **Expected output:**
 Quiz me
@@ -129,7 +129,7 @@ Correct!
 text
 
 ### 2.3 Input: `hi`
-![Screenshot 3: Chat session showing "You: hi" → "Bot: Hello!" or similar greeting response](/python_code/img/03-chat-hi.png)
+![Screenshot 3: Chat session showing "You: hi" → "Bot: Hello!" or similar greeting response](../python_code/img/03-chat-hi.png)
 
 **Expected output:**
 You: hi
@@ -137,7 +137,7 @@ Bot: Hello!
 text
 
 ### 2.4 Input: `name`
-![Screenshot 4: Chat session showing "You: name" or "what is your name" → "Bot: You can call me BobBot."](/python_code/img/04-chat-name.png)
+![Screenshot 4: Chat session showing "You: name" or "what is your name" → "Bot: You can call me BobBot."](../python_code/img/04-chat-name.png)
 
 **Expected output:**
 You: name
@@ -145,7 +145,7 @@ Bot: You can call me BobBot.
 text
 
 ### 2.5 Input: `hours`
-![Screenshot 5: Chat session showing "You: hours" → "Bot: We are open 7am-4pm Monday-Friday!"](/python_code/img/05-chat-hours.png)
+![Screenshot 5: Chat session showing "You: hours" → "Bot: We are open 7am-4pm Monday-Friday!"](../python_code/img/05-chat-hours.png)
 
 **Expected output:**
 You: hours
@@ -153,7 +153,7 @@ Bot: We are open 7am-4pm Monday-Friday!
 text
 
 ### 2.6 Input: `goodbye` (stops)
-![Screenshot 6: Chat session showing "You: goodbye" → "Bot: Goodbye!" → "Chatbot stopped because goodbye intent was detected."](/python_code/img/06-chat-goodbye.png)
+![Screenshot 6: Chat session showing "You: goodbye" → "Bot: Goodbye!" → "Chatbot stopped because goodbye intent was detected."](../python_code/img/06-chat-goodbye.png)
 
 **Expected output:**
 You: goodbye
