@@ -1,6 +1,8 @@
 # Python Code - SEHS4678 
 **23048495S** | PolyU SPEED | SEHS4678 Artificial Intelligence
-**Github:** https://appledev0528.github.io/SEHS4678_AI/python_code/README.md
+
+
+**Github:** https://appledev0528.github.io/SEHS4678_AI/python_code/
 ---
 
 ## 1. Code Copy Text
