@@ -143,7 +143,7 @@ Bot: You can call me BobBot.
 text
 
 ### 2.5 Input: `hours`
-![Screenshot 5: Chat session showing "You: hours" → "Bot: We are open 7am-4pm Monday-Friday!"](/python_code/img/04-chat-hours.png)
+![Screenshot 5: Chat session showing "You: hours" → "Bot: We are open 7am-4pm Monday-Friday!"](/python_code/img/05-chat-hours.png)
 
 **Expected output:**
 You: hours
@@ -151,7 +151,7 @@ Bot: We are open 7am-4pm Monday-Friday!
 text
 
 ### 2.6 Input: `goodbye` (stops)
-![Screenshot 6: Chat session showing "You: goodbye" → "Bot: Goodbye!" → "Chatbot stopped because goodbye intent was detected."](/python_code/img/04-chat-goodbye.png)
+![Screenshot 6: Chat session showing "You: goodbye" → "Bot: Goodbye!" → "Chatbot stopped because goodbye intent was detected."](/python_code/img/06-chat-goodbye.png)
 
 **Expected output:**
 You: goodbye
